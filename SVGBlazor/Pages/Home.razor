@@ -1,0 +1,47 @@
+﻿@page "/"
+
+<PageTitle>SVG</PageTitle>
+
+<h3>Výukový Grafický Editor</h3>
+
+<div>
+    <button @onclick="()=>Pridat(TypObrazce.Kruh)">🟠 Přidat kruh</button>
+    <button @onclick="() => Pridat(TypObrazce.Obdelnik)">🟦 Přidat obdélník</button>
+    <span style="margin: 0 10px;"> | </span>
+    <button>➡️ Pounout vše</button>
+    <button style="color: darkred;">🗑️ Smazat vybraný</button>
+    <button @onclick="SmazatPosledni" style="color: red;">❌ Smazat poslední</button>
+</div>
+
+<svg style="border: 1px solid #cccccc; margin: 15px 0" height="300" width="500" xmlns="http://www.w3.org/2000/svg">
+    @foreach (var obrazec in obrazceSeznam)
+    {
+        @((MarkupString)obrazec.Vykresli())
+    }
+
+</svg>
+
+@code {
+    private List<Obrazec> obrazceSeznam = new();
+
+    private void Pridat(TypObrazce typ)
+    {
+        Obrazec novyObrazec = typ switch
+        {
+            TypObrazce.Kruh => new Kruh { Polomer = Random.Shared.Next(10,30), Barva = "blue" },
+            TypObrazce.Obdelnik => new Obdelnik { Sirka = Random.Shared.Next(20, 60), Vyska = Random.Shared.Next(20, 50), Barva = "green" },
+            _ => throw new ArgumentException("Neznámý typ obrazce")
+        };
+        novyObrazec.X = Random.Shared.Next(10, 450);
+        novyObrazec.Y = Random.Shared.Next(10, 270);
+        obrazceSeznam.Add(novyObrazec);
+    }
+
+    private void SmazatPosledni()
+    {
+        if (obrazceSeznam.Count > 0)
+        {
+            obrazceSeznam.RemoveAt(obrazceSeznam.Count - 1);
+        }
+    }
+}

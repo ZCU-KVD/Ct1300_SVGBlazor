@@ -8,21 +8,25 @@
     <button @onclick="()=>Pridat(TypObrazce.Kruh)">🟠 Přidat kruh</button>
     <button @onclick="() => Pridat(TypObrazce.Obdelnik)">🟦 Přidat obdélník</button>
     <span style="margin: 0 10px;"> | </span>
-    <button>➡️ Pounout vše</button>
-    <button style="color: darkred;">🗑️ Smazat vybraný</button>
+    <button @onclick="PosunoutVse">➡️ Pounout vše</button>
+    <button @onclick="SmazatVybrany" disabled="@(!JeNecoVybrane)" style="color: darkred;">🗑️ Smazat vybraný</button>
     <button @onclick="SmazatPosledni" style="color: red;">❌ Smazat poslední</button>
 </div>
 
 <svg style="border: 1px solid #cccccc; margin: 15px 0" height="300" width="500" xmlns="http://www.w3.org/2000/svg">
     @foreach (var obrazec in obrazceSeznam)
     {
-        @((MarkupString)obrazec.Vykresli())
+        <g @onclick="()=>Vybrat(obrazec)">
+            @((MarkupString)obrazec.Vykresli())
+        </g>
     }
 
 </svg>
 
 @code {
     private List<Obrazec> obrazceSeznam = new();
+
+    private bool JeNecoVybrane => obrazceSeznam.Any(o => o.Vybrany);
 
     private void Pridat(TypObrazce typ)
     {
@@ -42,6 +46,33 @@
         if (obrazceSeznam.Count > 0)
         {
             obrazceSeznam.RemoveAt(obrazceSeznam.Count - 1);
+        }
+    }
+
+    private void PosunoutVse()
+    {
+        foreach (var obraz in obrazceSeznam)
+        {
+            obraz.Posun(10, 2);
+        }
+    }
+
+    private void Vybrat(Obrazec obrazec)
+    {
+        //obrazec.Vybrany = !obrazec.Vybrany;
+        foreach (var obraz in obrazceSeznam)
+        {
+            obraz.Vybrany = false;
+        }
+        obrazec.Vybrany = true;
+    }
+
+    private void SmazatVybrany()
+    {
+        var vybranyObrazec = obrazceSeznam.FirstOrDefault(o => o.Vybrany);
+        if (vybranyObrazec != null)
+        {
+            obrazceSeznam.Remove(vybranyObrazec);
         }
     }
 }

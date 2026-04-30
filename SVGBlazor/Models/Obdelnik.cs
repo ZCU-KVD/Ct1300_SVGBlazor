@@ -7,7 +7,7 @@
 
 		public override string Vykresli()
 		{
-			return $"<rect width=\"{Sirka}\" height=\"{Vyska}\" x=\"{X}\" y=\"{Y}\" fill=\"{Barva}\" stroke=\"black\" stroke-width=\"3\" />";
+			return $"<rect width=\"{Sirka}\" height=\"{Vyska}\" x=\"{X}\" y=\"{Y}\" fill=\"{Barva}\" stroke=\"{(Vybrany ? "black" : "none")}\" stroke-width=\"3\" />";
 		}
 	}
 }

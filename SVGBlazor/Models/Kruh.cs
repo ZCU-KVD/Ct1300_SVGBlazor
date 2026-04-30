@@ -6,7 +6,7 @@
 
 		public override string Vykresli() 
 		{
-			return $"<circle r=\"{Polomer}\" cx=\"{X}\" cy=\"{Y}\" fill=\"{Barva}\" stroke=\"black\" stroke-width=\"3\" />";
+			return $"<circle r=\"{Polomer}\" cx=\"{X}\" cy=\"{Y}\" fill=\"{Barva}\" stroke=\"{(Vybrany ? "black" : "none")} \" stroke-width=\"3\" />";
 		}
 	}
 }
